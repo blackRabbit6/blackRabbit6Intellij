@@ -42,6 +42,20 @@
             background-color: saddlebrown; /* 헤더 배경색 */
             color: white; /* 헤더 텍스트 색상 */
         }
+        input[type="button"]{
+            margin: 10px;
+            padding: 10px 20px;
+            border: none;
+            background-color: sandybrown;
+            color: black;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 17px;
+        }
+        input[type="button"]:hover{
+            background-color: lightsalmon;
+            color: black;
+        }
     </style>
 </head>
 <body>
@@ -72,6 +86,8 @@
         <p>Error details: <%= request.getAttribute("errorMessage") %>
         </p>
         <% } %>
+
+        <input type="button" value="뒤로" onclick="location.href='/shop_Web_exploded/shopping/userMenu.jsp'">
     </fieldset>
 </body>
 </html>

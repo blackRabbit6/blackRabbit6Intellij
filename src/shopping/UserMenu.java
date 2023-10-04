@@ -15,8 +15,8 @@ public class UserMenu extends HttpServlet {
 
         String action = req.getParameter("action");
 
-        if("메뉴판보기".equals(action)){
-            resp.sendRedirect(req.getContextPath()+"/shopping/menu.jsp");
+        if("메뉴판 보기".equals(action)){
+            resp.sendRedirect(req.getContextPath()+"/shopping/Menu");
         } else if ("장바구니 추가".equals(action)) {
             resp.sendRedirect(req.getContextPath()+"/shopping/basket.jsp");
         } else if ("장바구니 보기".equals(action)) {

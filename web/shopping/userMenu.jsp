@@ -73,32 +73,25 @@
             <h2>원하시는 기능을 선택하세요</h2>
             <ul>
                 <li>
-                    <input type="hidden" name="action" value ="메뉴판 보기"/>
-                    <input type = "submit" value = "메뉴판 보기"/>
+                    <input type="submit" name="action" value ="메뉴판 보기"/>
                 </li>
                 <li>
-                    <input type="hidden" name="action" value ="장바구니 담기"/>
-                    <input type = "submit" value = "장바구니 담기"/>
+                    <input type="submit" name="action" value ="장바구니 담기"/>
                 </li>
                 <li>
-                    <input type="hidden" name="action" value ="장바구니 보기"/>
-                    <input type = "submit" value = "장바구니 보기"/>
+                    <input type="submit" name="action" value ="장바구니 보기"/>
                 </li>
                 <li>
-                    <input type="hidden" name="action" value ="추가"/>
-                    <input type = "submit" value = "추가"/>
+                    <input type="submit" name="action" value ="추가"/>
                 </li>
                 <li>
-                    <input type="hidden" name="action" value ="취소"/>
-                    <input type = "submit" value = "취소"/>
+                    <input type="submit" name="action" value ="취소"/>
                 </li>
                 <li>
-                    <input type="hidden" name="action" value ="구매"/>
-                    <input type = "submit" value = "구매"/>
+                    <input type="submit" name="action" value ="구매"/>
                 </li>
                 <li>
-                    <input type="hidden" name="action" value ="종료"/>
-                    <input type = "submit" value = "종료"/>
+                    <input type="submit" name="action" value ="종료"/>
                 </li>
             </ul>
             <%--hidden, submit 둘다 쓴 이유: hidden(서버로 데이터 전송 목적),submit(누르면 form 데이터 서버로 전송)--%>

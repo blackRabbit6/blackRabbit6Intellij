@@ -73,24 +73,19 @@
         <h2>원하시는 기능을 선택하세요</h2>
         <ul>
             <li>
-                <input type="hidden" name="action" value ="메뉴판 보기"/>
-                <input type = "submit" value = "메뉴판 보기"/>
+                <input type="submit" name="action" value ="메뉴판 보기"/>
             </li>
             <li>
-                <input type="hidden" name="action" value ="재고수량 추가"/>
-                <input type = "submit" value = "재고수량 추가"/>
+                <input type="submit" name="action" value ="재고수량 추가"/>
             </li>
             <li>
-                <input type="hidden" name="action" value ="구매내역 보기"/>
-                <input type = "submit" value = "구매내역 보기"/>
+                <input type="submit" name="action" value ="구매내역 보기"/>
             </li>
             <li>
-                <input type="hidden" name="action" value ="새 관리자 추가"/>
-                <input type = "submit" value = "새 관리자 추가"/>
+                <input type="submit" name="action" value ="관리자 추가"/>
             </li>
             <li>
-                <input type="hidden" name="action" value ="종료"/>
-                <input type = "submit" value = "종료"/>
+                <input type="submit" name="action" value ="종료"/>
             </li>
         </ul>
     </fieldset>
