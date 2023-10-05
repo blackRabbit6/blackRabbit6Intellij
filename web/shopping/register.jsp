@@ -45,6 +45,10 @@
             width :60%;/* input의 너비 설정*/
             text-align:left;/* 텍스트를 왼쪽으로 정렬*/
         }
+        input[type='password']{
+            width :60%;/* input의 너비 설정*/
+            text-align:left;/* 텍스트를 왼쪽으로 정렬*/
+        }
 
         input[type="submit"], input[type="button"]{
             margin: 10px;
@@ -73,7 +77,7 @@
                 </li>
                 <li>
                     <label for="PW" class="title">PW</label>
-                    <input type="text" id="PW" name="pw">
+                    <input type="password" id="PW" name="pw">
                 </li>
                 <li>
                     <label for="NAME" class="title">NAME</label>

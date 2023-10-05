@@ -45,6 +45,10 @@
             width :60%;/* input의 너비 설정*/
             text-align:left;/* 텍스트를 왼쪽으로 정렬*/
         }
+        input[type='password']{
+            width :60%;/* input의 너비 설정*/
+            text-align:left;/* 텍스트를 왼쪽으로 정렬*/
+        }
 
         input[type="submit"]{
             margin: 10px;
@@ -74,7 +78,7 @@
                 <li>
                     <%--안됫던 이유, 파라미터하고 변수달라서, named을 pw가 아닌PW로 했기 때문에 그냥 소문자로 하자--%>
                     <label for="PW" class="title">PW</label>
-                    <input type="text" id="PW" name="pw">
+                    <input type="password" id="PW" name="pw">
                 </li>
             </ul>
             <input type="submit" value="로그인">
