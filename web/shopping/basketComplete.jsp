@@ -48,7 +48,7 @@
 <fieldset>
     <h1>장바구니 완료!!</h1>
     <h3>더 추가 하실껀가요?</h3>
-    <input type="submit" value="추가" onclick="location.href='/shop_Web_exploded/shopping/basket.jsp'">
+    <input type="submit" value="추가" onclick="location.href='/shop_Web_exploded/shopping/Basket'">
     <input type="submit" value="아니오" onclick="location.href='/shop_Web_exploded/shopping/userMenu.jsp'">
 </fieldset>
 </body>
