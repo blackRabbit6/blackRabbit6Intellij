@@ -5,6 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -53,6 +54,10 @@ public class Login extends HttpServlet {
                     String userName = resultSet.getString("name");
                     if("USER".equals(userType)){
                         req.setAttribute("message", userName +" 님 환영합니다! 사용자 메뉴로 안내합니다!");
+                        // 로그인 성공 시 User 객체 생성 및 세션에 저장
+                        User user = new User(id, userName);
+                        HttpSession session = req.getSession();
+                        session.setAttribute("user", user);
                         req.getRequestDispatcher("/shopping/userMenu.jsp").forward(req, resp);
                     } else if ("MANAGER".equals(userType)) {
                         req.setAttribute("message", userName+" 님 어서오세요. 관리자메뉴로 이동합니다.");

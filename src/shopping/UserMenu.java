@@ -17,8 +17,8 @@ public class UserMenu extends HttpServlet {
 
         if("메뉴판 보기".equals(action)){
             resp.sendRedirect(req.getContextPath()+"/shopping/Menu");
-        } else if ("장바구니 추가".equals(action)) {
-            resp.sendRedirect(req.getContextPath()+"/shopping/basket.jsp");
+        } else if ("장바구니 담기".equals(action)) {
+            resp.sendRedirect(req.getContextPath()+"/shopping/Basket");
         } else if ("장바구니 보기".equals(action)) {
             resp.sendRedirect(req.getContextPath()+"/shopping/look.jsp");
         }else if ("추가".equals(action)) {
@@ -28,7 +28,10 @@ public class UserMenu extends HttpServlet {
         }else if ("구매".equals(action)) {
             resp.sendRedirect(req.getContextPath()+"/shopping/purchase.jsp");
         }else if ("종료".equals(action)) {
-            resp.sendRedirect(req.getContextPath()+"/shopping/logout.jsp");
+            // 로그아웃 메시지를 세션에 저장
+            req.getSession().setAttribute("message", "로그아웃 되었습니다.");
+            // 초기 화면으로 리다이렉트
+            resp.sendRedirect(req.getContextPath() + "/shopping/start.jsp");
         }
     }
 }

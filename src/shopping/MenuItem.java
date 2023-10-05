@@ -9,6 +9,10 @@ public class MenuItem {
         this.quantity = quantity;
     }
 
+    public MenuItem(String productName) {  // 메뉴 이름만을 받는 생성자 추가
+        this.productName = productName;
+        this.quantity = 0;  // 수량은 기본적으로 0으로 설정
+    }
     public String getProductName() {
         return productName;
     }

@@ -24,7 +24,10 @@ public class ManagerMenu extends HttpServlet {
         }else if ("관리자 추가".equals(action)) {
             resp.sendRedirect(req.getContextPath()+"/shopping/addManager.jsp");
         }else if ("종료".equals(action)) {
-            resp.sendRedirect(req.getContextPath()+"/shopping/logout.jsp");
+            // 로그아웃 메시지를 세션에 저장
+            req.getSession().setAttribute("message", "로그아웃 되었습니다.");
+            // 초기 화면으로 리다이렉트
+            resp.sendRedirect(req.getContextPath() + "/shopping/start.jsp");
         }
     }
 }
