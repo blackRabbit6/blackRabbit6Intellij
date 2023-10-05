@@ -13,7 +13,7 @@
     <script>
         var message = '<%= request.getAttribute("message") %>';
         // 메시지가 있는 경우만 알림창 띄우기
-        if (message) {
+        if (message && message !== 'null') {
             alert(message);
         }
     </script>
@@ -72,6 +72,7 @@
         <h1>관리자 전용 메뉴</h1>
         <h2>원하시는 기능을 선택하세요</h2>
         <ul>
+            <%--잘 안된 이유: type명이 두개가 있기 때문에 에러날 확률 높음 그래서하나만 쓰기! --%>
             <li>
                 <input type="submit" name="action" value ="메뉴판 보기"/>
             </li>

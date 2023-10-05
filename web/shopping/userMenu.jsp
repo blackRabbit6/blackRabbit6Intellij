@@ -13,7 +13,7 @@
     <script>
         var message = '<%= request.getAttribute("message") %>';
         // 메시지가 있는 경우만 알림창 띄우기
-        if (message) {
+        if (message && message !== 'null') {
             alert(message);
         }
     </script>
