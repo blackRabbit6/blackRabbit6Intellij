@@ -18,7 +18,7 @@ public class Login extends HttpServlet {
     //private 쓰는이유: 클래스 내부에서만 접근 가능하게 제한하는 접근 제어자(외부에서 데이터베이스 접근 방지)
     // static= 클래스자체 속함, 한번만 생성, 모든인스턴스 공유하는변수 메소드 정의
     // final = 값 변동 막음
-    private static final String JDBC_URL = "jdbc:oracle:thin:@localhost:1521:XE";
+    private static final String JDBC_URL = "jdbc:oracle:thin:@192.168.0.86:1521:XE";
     private static final String JDBC_USER = "shop";
     private static final String JDBC_PASSWORD = "shop";
 

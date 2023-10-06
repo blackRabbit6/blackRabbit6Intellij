@@ -16,7 +16,7 @@ import java.util.List;
 
 @WebServlet("/shopping/Basket")
 public class Basket extends HttpServlet {
-    private static final String JDBC_URL = "jdbc:oracle:thin:@localhost:1521:XE";
+    private static final String JDBC_URL = "jdbc:oracle:thin:@192.168.0.86:1521:XE";
     private static final String JDBC_USER = "shop";
     private static final String JDBC_PASSWORD = "shop";
 
@@ -62,67 +62,97 @@ public class Basket extends HttpServlet {
         int quantity = Integer.parseInt(req.getParameter("quantity"));
 
         // 세션에서 사용자 정보 불러오기
-        HttpSession session=req.getSession();
-        User user =(User) session.getAttribute("user");
+        HttpSession session = req.getSession();
+        User user = (User) session.getAttribute("user");
 
-        if(user == null){
+        if (user == null) {
             resp.sendRedirect(req.getContextPath() + "/shopping/login.jsp");
             return;
         }
 
-        String id=user.getId();
-        String name=user.getName();
+        String id = user.getId();
+        String name = user.getName();
 
-
-        Connection connection=null;
+        Connection connection = null;
 
         resp.setContentType("text/html;charset=UTF-8");
 
-        try{
+        try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
-            connection= DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD);
+            connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
 
-            if(connection!=null){
-                String stockSql="SELECT quantity FROM MENU where productname=?";
-                PreparedStatement stockStatement=connection.prepareStatement(stockSql);
-                stockStatement.setString(1,productName);
+            if (connection != null) {
+                // 장바구니에 이미 존재하는지 확인
+                String existingBasketSql = "SELECT quantity FROM BASKET WHERE productname=? AND id=?";
+                PreparedStatement existingBasketStatement = connection.prepareStatement(existingBasketSql);
+                existingBasketStatement.setString(1, productName);
+                existingBasketStatement.setString(2, id);
 
-                ResultSet stockResult=stockStatement.executeQuery();
+                ResultSet existingBasketResult = existingBasketStatement.executeQuery();
 
-                if(stockResult.next()){
-                    int currentStock=stockResult.getInt("quantity");
-                    if(quantity<=0){
-                        req.setAttribute("message","재고가 0입니다.");
-                    }else if(quantity>currentStock){
-                        req.setAttribute("message","입력하신 수량이 재고량 보다 많습니다.");
-                    }else{
-                        // basket 테이블에 사용자 ID와 이름도 함께 저장
-                        String basketSql="INSERT INTO BASKET(productname, quantity, id, name) VALUES(?,?,?,?)";
-                        PreparedStatement basketStatement=connection.prepareStatement(basketSql);
-                        basketStatement.setString(1,productName);
-                        basketStatement.setInt(2,quantity);
-                        basketStatement.setString(3,id);
-                        basketStatement.setString(4,name);
+                if (existingBasketResult.next()) {
+                    int currentQuantity = existingBasketResult.getInt("quantity");
+                    int newQuantity = currentQuantity + quantity;
 
-                        int result=basketStatement.executeUpdate();
+                    if (newQuantity > 0) {
+                        // 장바구니 수량 업데이트
+                        String updateBasketSql = "UPDATE BASKET SET quantity=? WHERE productname=? AND id=?";
+                        PreparedStatement updateBasketStatement = connection.prepareStatement(updateBasketSql);
+                        updateBasketStatement.setInt(1, newQuantity);
+                        updateBasketStatement.setString(2, productName);
+                        updateBasketStatement.setString(3, id);
+                        updateBasketStatement.executeUpdate();
 
-                        if(result>0){
-                            req.setAttribute("message","선택하신 "+productName+"를 "+quantity+" 수량을 장바구니에 담으셨습니다.");
-                            resp.sendRedirect(req.getContextPath() + "/shopping/basketComplete.jsp");
-                            return;
-                        }
+                        // 메시지 설정
+                        req.setAttribute("message", productName + "의 수량을 " + newQuantity + "로 업데이트했습니다.");
+                    } else {
+                        // 수량이 0보다 작거나 같으면 알림 표시
+                        req.setAttribute("message", "수량은 1 이상이어야 합니다.");
                     }
-                }else{
-                    req.setAttribute("message",productName+"이라는 이름을 찾을수 없습니다");
+                } else {
+                    // 장바구니에 없는 경우 추가
+                    String stockSql = "SELECT quantity FROM MENU where productname=?";
+                    PreparedStatement stockStatement = connection.prepareStatement(stockSql);
+                    stockStatement.setString(1, productName);
+
+                    ResultSet stockResult = stockStatement.executeQuery();
+
+                    if (stockResult.next()) {
+                        int currentStock = stockResult.getInt("quantity");
+                        if (quantity <= 0 || quantity > currentStock) {
+                            // 재고가 0이거나 입력한 수량이 재고량보다 많을 때 알림 표시
+                            req.setAttribute("message", "입력하신 수량이 유효하지 않습니다.");
+                        } else {
+                            // basket 테이블에 사용자 ID와 이름도 함께 저장
+                            String basketSql = "INSERT INTO BASKET(productname, quantity, id, name) VALUES(?,?,?,?)";
+                            PreparedStatement basketStatement = connection.prepareStatement(basketSql);
+                            basketStatement.setString(1, productName);
+                            basketStatement.setInt(2, quantity);
+                            basketStatement.setString(3, id);
+                            basketStatement.setString(4, name);
+
+                            int result = basketStatement.executeUpdate();
+
+                            if (result > 0) {
+                                // 메시지 설정
+                                req.setAttribute("message", "선택하신 " + productName + "를 " + quantity + " 수량을 장바구니에 담으셨습니다.");
+                                resp.sendRedirect(req.getContextPath() + "/shopping/basketComplete.jsp");
+                                return;
+                            }
+                        }
+                    } else {
+                        req.setAttribute("message", productName + "이라는 이름을 찾을 수 없습니다.");
+                    }
                 }
             }
 
             connection.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        resp.sendRedirect(req.getContextPath()+"/shopping/basket.jsp");
-
+        // 재고가 0이거나 입력한 수량이 재고량보다 많은 경우에도 여기서 장바구니 페이지로 돌아갑니다.
+        resp.sendRedirect(req.getContextPath() + "/shopping/basket.jsp");
     }
+
 }
