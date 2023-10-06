@@ -82,9 +82,6 @@
                     <input type="submit" name="action" value ="장바구니 보기"/>
                 </li>
                 <li>
-                    <input type="submit" name="action" value ="추가"/>
-                </li>
-                <li>
                     <input type="submit" name="action" value ="취소"/>
                 </li>
                 <li>

@@ -20,9 +20,7 @@ public class UserMenu extends HttpServlet {
         } else if ("장바구니 담기".equals(action)) {
             resp.sendRedirect(req.getContextPath()+"/shopping/Basket");
         } else if ("장바구니 보기".equals(action)) {
-            resp.sendRedirect(req.getContextPath()+"/shopping/look.jsp");
-        }else if ("추가".equals(action)) {
-            resp.sendRedirect(req.getContextPath()+"/shopping/add.jsp");
+            resp.sendRedirect(req.getContextPath()+"/shopping/Look");
         }else if ("취소".equals(action)) {
             resp.sendRedirect(req.getContextPath()+"/shopping/cancel.jsp");
         }else if ("구매".equals(action)) {
