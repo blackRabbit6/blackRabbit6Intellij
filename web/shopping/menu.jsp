@@ -87,7 +87,20 @@
         </p>
         <% } %>
 
-        <input type="button" value="뒤로" onclick="location.href='/shop_Web_exploded/shopping/userMenu.jsp'">
+        <% String userType = (String) session.getAttribute("userType");
+            String backUrl;
+
+            if ("manager".equals(userType)) {
+                backUrl = "/shop_Web_exploded/shopping/managerMenu.jsp";
+            } else {
+                backUrl = "/shop_Web_exploded/shopping/userMenu.jsp";
+            }
+
+            // '뒤로' 버튼의 onclick 속성 설정
+            String goBackScript = String.format("location.href='%s'", backUrl);
+        %>
+
+        <input type="button" value="뒤로" onclick="<%= goBackScript %>">
     </fieldset>
 </body>
 </html>

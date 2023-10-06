@@ -15,8 +15,8 @@ public class ManagerMenu extends HttpServlet {
 
         String action = req.getParameter("action");
 
-        if("메뉴판보기".equals(action)){
-            resp.sendRedirect(req.getContextPath()+"/shopping/menu.jsp");
+        if("메뉴판 보기".equals(action)){
+            resp.sendRedirect(req.getContextPath()+"/shopping/Menu");
         } else if ("재고수량 추가".equals(action)) {
             resp.sendRedirect(req.getContextPath()+"/shopping/addQuantity.jsp");
         } else if ("구매내역 보기".equals(action)) {

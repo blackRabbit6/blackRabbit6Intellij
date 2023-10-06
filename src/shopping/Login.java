@@ -52,11 +52,14 @@ public class Login extends HttpServlet {
                 if(resultSet.next()){
                     String userType = resultSet.getString("type");
                     String userName = resultSet.getString("name");
+
+                    // 세션 생성 및 사용자 유형 저장
+                    HttpSession session = req.getSession();
+                    session.setAttribute("userType", userType.toLowerCase());  // "user" 또는 "manager"
                     if("USER".equals(userType)){
                         req.setAttribute("message", userName +" 님 환영합니다! 사용자 메뉴로 안내합니다!");
                         // 로그인 성공 시 User 객체 생성 및 세션에 저장
                         User user = new User(id, userName);
-                        HttpSession session = req.getSession();
                         session.setAttribute("user", user);
                         req.getRequestDispatcher("/shopping/userMenu.jsp").forward(req, resp);
                     } else if ("MANAGER".equals(userType)) {
