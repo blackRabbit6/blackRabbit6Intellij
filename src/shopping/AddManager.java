@@ -14,7 +14,7 @@ import java.sql.ResultSet;
 
 @WebServlet("/shopping/AddManager")
 public class AddManager extends HttpServlet {
-    private static final String JDBC_URL = "jdbc:oracle:thin:@localhost:1521:XE";
+    private static final String JDBC_URL = "jdbc:oracle:thin:@192.168.0.86:1521:XE";
     private static final String JDBC_USER = "shop";
     private static final String JDBC_PASSWORD = "shop";
     @Override
