@@ -55,7 +55,7 @@ public class AddQuantity extends HttpServlet {
 
             // After processing the form data and updating the database,
             // redirect to ManagerMenu.jsp page.
-            response.sendRedirect("/blackRabbit6Intellij_master_Web_exploded/shopping/Login");
+            response.sendRedirect("/shop_Web_exploded/shopping/Login");
 
         } catch(Exception e) {
             e.printStackTrace();

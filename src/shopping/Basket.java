@@ -94,22 +94,46 @@ public class Basket extends HttpServlet {
                     int currentQuantity = existingBasketResult.getInt("quantity");
                     int newQuantity = currentQuantity + quantity;
 
-                    if (newQuantity > 0) {
-                        // 장바구니 수량 업데이트
-                        String updateBasketSql = "UPDATE BASKET SET quantity=? WHERE productname=? AND id=?";
-                        PreparedStatement updateBasketStatement = connection.prepareStatement(updateBasketSql);
-                        updateBasketStatement.setInt(1, newQuantity);
-                        updateBasketStatement.setString(2, productName);
-                        updateBasketStatement.setString(3, id);
-                        updateBasketStatement.executeUpdate();
+                    String stockSql = "SELECT quantity FROM MENU where productname=?";
+                    PreparedStatement stockStatement = connection.prepareStatement(stockSql);
+                    stockStatement.setString(1, productName);
 
-                        // 메시지 설정
-                        req.setAttribute("message", productName + "의 수량을 " + newQuantity + "로 업데이트했습니다.");
-                    } else {
-                        // 수량이 0보다 작거나 같으면 알림 표시
-                        req.setAttribute("message", "수량은 1 이상이어야 합니다.");
+                    ResultSet stockResult = stockStatement.executeQuery();
+
+                    if (stockResult.next()) {
+                        int currentStock = stockResult.getInt("quantity");
+
+                        if (newQuantity > currentStock) {
+                            // 재고량을 초과하는 수량을 입력한 경우 알림 표시 및 장바구니로 돌아가기
+                            req.setAttribute("message", "입력하신 수량이 재고량을 초과합니다.");
+
+                            // 수정된 부분: 바로 장바구니.jsp로 포워딩
+                            List<MenuItem> menuList = getMenu();
+                            req.setAttribute("menu", menuList);
+                            req.getRequestDispatcher("/shopping/basket.jsp").forward(req, resp);
+                        } else if (newQuantity >= 0) {
+                            // 장바구니 수량 업데이트
+                            String updateBasketSql = "UPDATE BASKET SET quantity=? WHERE productname=? AND id=?";
+                            PreparedStatement updateBasketStatement = connection.prepareStatement(updateBasketSql);
+                            updateBasketStatement.setInt(1, newQuantity);
+                            updateBasketStatement.setString(2, productName);
+                            updateBasketStatement.setString(3, id);
+                            updateBasketStatement.executeUpdate();
+
+                            // 메시지 설정
+                            req.setAttribute("message", productName + "의 수량을 " + newQuantity + "로 업데이트했습니다.");
+                            req.getRequestDispatcher("/shopping/basketComplete.jsp").forward(req, resp);
+                        } else {
+                            // 수량이 0보다 작으면 알림 표시
+                            req.setAttribute("message", "수량은 0 이상이어야 합니다.");
+
+                            // 수정된 부분: 바로 장바구니.jsp로 포워딩
+                            List<MenuItem> menuList = getMenu();
+                            req.setAttribute("menu", menuList);
+                            req.getRequestDispatcher("/shopping/basket.jsp").forward(req, resp);
+                        }
                     }
-                } else {
+                }  else {
                     // 장바구니에 없는 경우 추가
                     String stockSql = "SELECT quantity FROM MENU where productname=?";
                     PreparedStatement stockStatement = connection.prepareStatement(stockSql);
@@ -122,6 +146,11 @@ public class Basket extends HttpServlet {
                         if (quantity <= 0 || quantity > currentStock) {
                             // 재고가 0이거나 입력한 수량이 재고량보다 많을 때 알림 표시
                             req.setAttribute("message", "입력하신 수량이 유효하지 않습니다.");
+
+                            // 수정된 부분: 바로 장바구니.jsp로 포워딩
+                            List<MenuItem> menuList = getMenu();
+                            req.setAttribute("menu", menuList);
+                            req.getRequestDispatcher("/shopping/basket.jsp").forward(req, resp);
                         } else {
                             // basket 테이블에 사용자 ID와 이름도 함께 저장
                             String basketSql = "INSERT INTO BASKET(productname, quantity, id, name) VALUES(?,?,?,?)";
@@ -135,24 +164,24 @@ public class Basket extends HttpServlet {
 
                             if (result > 0) {
                                 // 메시지 설정
-                                req.setAttribute("message", "선택하신 " + productName + "를 " + quantity + " 수량을 장바구니에 담으셨습니다.");
-                                resp.sendRedirect(req.getContextPath() + "/shopping/basketComplete.jsp");
-                                return;
+                                req.setAttribute("message", productName + "를 " + quantity + " 수량을 장바구니에 담으셨습니다.");
+                                req.getRequestDispatcher("/shopping/basketComplete.jsp").forward(req, resp);
                             }
                         }
                     } else {
                         req.setAttribute("message", productName + "이라는 이름을 찾을 수 없습니다.");
+
+                        // 수정된 부분: 바로 장바구니.jsp로 포워딩
+                        List<MenuItem> menuList = getMenu();
+                        req.setAttribute("menu", menuList);
+                        req.getRequestDispatcher("/shopping/basket.jsp").forward(req, resp);
                     }
                 }
             }
-
             connection.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        // 재고가 0이거나 입력한 수량이 재고량보다 많은 경우에도 여기서 장바구니 페이지로 돌아갑니다.
-        resp.sendRedirect(req.getContextPath() + "/shopping/basket.jsp");
     }
 
 }
