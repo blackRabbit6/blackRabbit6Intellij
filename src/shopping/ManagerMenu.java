@@ -20,7 +20,7 @@ public class ManagerMenu extends HttpServlet {
         } else if ("재고수량 추가".equals(action)) {
             resp.sendRedirect(req.getContextPath()+"/shopping/addQuantity.jsp");
         } else if ("구매내역 보기".equals(action)) {
-            resp.sendRedirect(req.getContextPath()+"/shopping/receipt.jsp");
+            resp.sendRedirect(req.getContextPath()+"/shopping/Receipt");
         }else if ("관리자 추가".equals(action)) {
             resp.sendRedirect(req.getContextPath()+"/shopping/addManager.jsp");
         }else if ("종료".equals(action)) {

@@ -24,7 +24,7 @@ public class UserMenu extends HttpServlet {
         }else if ("취소".equals(action)) {
             resp.sendRedirect(req.getContextPath()+"/shopping/cancel.jsp");
         }else if ("구매".equals(action)) {
-            resp.sendRedirect(req.getContextPath()+"/shopping/purchase.jsp");
+            resp.sendRedirect(req.getContextPath()+"/shopping/Purchase");
         }else if ("종료".equals(action)) {
             // 로그아웃 메시지를 세션에 저장
             req.getSession().setAttribute("message", "로그아웃 되었습니다.");
