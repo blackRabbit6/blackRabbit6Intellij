@@ -105,7 +105,7 @@ public class Basket extends HttpServlet {
 
                         if (newQuantity > currentStock) {
                             // 재고량을 초과하는 수량을 입력한 경우 알림 표시 및 장바구니로 돌아가기
-                            req.setAttribute("message", "입력하신 수량이 재고량을 초과합니다.");
+                            req.setAttribute("message", "원하시는 제품의 수량의 재고량이 품절이거나, 재고량이 적으니 다시 확인후, 구매 진행해주세요.");
 
                             // 수정된 부분: 바로 장바구니.jsp로 포워딩
                             List<MenuItem> menuList = getMenu();
@@ -121,7 +121,7 @@ public class Basket extends HttpServlet {
                             updateBasketStatement.executeUpdate();
 
                             // 메시지 설정
-                            req.setAttribute("message", productName + "의 수량을 " + newQuantity + "로 업데이트했습니다.");
+                            req.setAttribute("message", productName + "의 수량을 " + quantity + " 개를 추가로 장바구니에 담았습니다.");
                             req.getRequestDispatcher("/shopping/basketComplete.jsp").forward(req, resp);
                         } else {
                             // 수량이 0보다 작으면 알림 표시
@@ -145,7 +145,7 @@ public class Basket extends HttpServlet {
                         int currentStock = stockResult.getInt("quantity");
                         if (quantity <= 0 || quantity > currentStock) {
                             // 재고가 0이거나 입력한 수량이 재고량보다 많을 때 알림 표시
-                            req.setAttribute("message", "입력하신 수량이 유효하지 않습니다.");
+                            req.setAttribute("message", "원하시는 제품의 수량의 재고량이 품절이거나, 재고량이 적으니 다시 확인후, 구매 진행해주세요.");
 
                             // 수정된 부분: 바로 장바구니.jsp로 포워딩
                             List<MenuItem> menuList = getMenu();
@@ -164,7 +164,7 @@ public class Basket extends HttpServlet {
 
                             if (result > 0) {
                                 // 메시지 설정
-                                req.setAttribute("message", productName + "를 " + quantity + " 수량을 장바구니에 담으셨습니다.");
+                                req.setAttribute("message", productName + "를 " + quantity + " 개를 장바구니에 담으셨습니다.");
                                 req.getRequestDispatcher("/shopping/basketComplete.jsp").forward(req, resp);
                             }
                         }
